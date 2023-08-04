@@ -1,8 +1,9 @@
 import { FC, FormEvent } from 'react'
 
+import Card from '../../UI/Card'
 import Button from '../Button'
 
-import './Form.css'
+import styles from './Form.module.css'
 
 type Props = {
   onAddUser: () => void
@@ -15,15 +16,18 @@ const Form: FC<Props> = ({ onAddUser }) => {
   }
 
   return (
-    <form onSubmit={handleSubmitForm} className="form">
-      <label htmlFor="userName" className="form__label">Name</label>
-      <input id="userName" type="text" className="form__input" />
+    <Card className={styles.formWrap}>
+      <form className={styles.form} onSubmit={handleSubmitForm}>
+        <label htmlFor="userName" className={styles.formLabel}>Name</label>
+        <input id="userName" type="text" className={styles.formInput} />
 
-      <label htmlFor="userAge" className="form__label">Age</label>
-      <input id="userAge" type="number" className="form__input" />
+        <label htmlFor="userAge" className={styles.formLabel}>Age</label>
+        <input id="userAge" type="number" className={styles.formInput} />
 
-      <Button buttonType={"submit"}>Add user</Button>
-    </form>
+        <Button buttonType={'submit'}>Add user</Button>
+      </form>
+    </Card>
+
   )
 }
 

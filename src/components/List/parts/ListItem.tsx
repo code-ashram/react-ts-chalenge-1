@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import '../List.css'
+import styles from '../List.module.css'
 
 type Props = {
   title: string,
@@ -8,7 +8,7 @@ type Props = {
 }
 
 const ListItem: FC<Props> = ({ title, age }) => (
-  <li className="list__item">{title} - {age} years</li>
+  <li className={`${styles.listItem}`}>{title} - {age} years</li>
 )
 
 export default ListItem

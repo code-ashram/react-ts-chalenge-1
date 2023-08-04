@@ -1,14 +1,14 @@
 import { FC, ReactNode } from 'react'
 
-import './Card.css'
+import styles from './Card.module.css'
 
 type Props = {
-  className: string,
+  className?: string,
   children: ReactNode
 }
 
 const Card: FC<Props> = ({ className, children }) => (
-    <div className={`card ${className}`}>{children}</div>
-  )
+  <div className={className ? `${styles.card} ${className}` : styles.card}>{children}</div>
+)
 
 export default Card

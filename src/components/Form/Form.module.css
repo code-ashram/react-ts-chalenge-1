@@ -1,0 +1,38 @@
+:local(.formWrap) {
+    align-self: center;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 570px;
+}
+
+:local(.form) {
+    text-align: center;
+}
+
+:local(.formLabel) {
+    margin-right: 10px;
+}
+
+:local(.formInput) {
+    margin-right: 20px;
+}
+
+@media (max-width: 600px) {
+    :local(.form) {
+        display: flex;
+        flex-direction: column;
+    }
+
+    :local(.formWrap) {
+        max-width: 400px;
+    }
+
+    :local(.form) button {
+        display: block;
+        margin-top: 20px;
+    }
+
+    :local(.formInput) {
+        margin-right: 0;
+    }
+}

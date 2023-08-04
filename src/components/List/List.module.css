@@ -1,0 +1,19 @@
+:local(.list)  {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+:local(.listItem) {
+    padding: 4px 8px;
+    border: 1px solid lightgrey;
+}
+
+:local(.listWrap) {
+    width: 100%;
+    max-width: 800px;
+}
+
+:local(.listItem):not(:last-child) {
+    margin-bottom: 10px;
+}

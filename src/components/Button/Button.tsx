@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react'
 
-import './Button.css'
+import styles from './Button.module.css'
 
 type Props = {
   children: ReactNode,
@@ -8,7 +8,7 @@ type Props = {
 }
 
 const Button: FC<Props> = ({ children, buttonType = 'button' }) => (
-  <button type={buttonType} className="btn">{children}</button>
+  <button type={buttonType} className={styles.btn}>{children}</button>
 )
 
 export default Button

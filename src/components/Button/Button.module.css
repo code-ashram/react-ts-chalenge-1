@@ -1,0 +1,20 @@
+:local(.btn) {
+    padding: 5px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background-color: dodgerblue;
+    border: 1px solid dodgerblue;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+:local(.btn):hover {
+    background-color: #0b73da;
+    cursor: pointer;
+}
+
+:local(.btn):active {
+    background-color: #085aac;
+    cursor: pointer;
+}
