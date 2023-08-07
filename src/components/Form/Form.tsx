@@ -13,18 +13,28 @@ type Props = {
   onAddUser: (userData: User) => void
 }
 
+type UserData = {
+  name: string,
+  age: number,
+}
+
 const Form: FC<Props> = ({ onAddUser }) => {
-  const [name, setName] = useState<string>('')
-  const [age, setAge] = useState<number>(0)
+  const [userInput, setUserInput] = useState<UserData>({name: '', age: 0})
   const [errors, setErrors] = useState<string | boolean>('')
   const [validation, setValidation] = useState<Record<'name' | 'age', boolean>>({ age: true, name: true })
 
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
-    setName(e.target.value)
+    setUserInput({
+      ...userInput,
+      name: e.target.value
+    })
   }
 
   const handleChangeAge = (e: ChangeEvent<HTMLInputElement>): void => {
-    setAge(Number(e.target.value))
+    setUserInput({
+      ...userInput,
+      age: Number(e.target.value)
+    })
   }
 
   const handleSubmitForm = (event: FormEvent): void => {
@@ -32,24 +42,26 @@ const Form: FC<Props> = ({ onAddUser }) => {
 
     const userData: User = {
       id: crypto.randomUUID(),
-      name,
-      age
+      name: userInput.name,
+      age: userInput.age
     }
 
-    if (age <= 0 && !name) {
+    if (userInput.age <= 0 && userInput.name) {
       setErrors(ERROR.INVALID_NAME_AND_AGE)
       setValidation({name: false, age: false})
-    } else if (age <= 0) {
+    } else if (userInput.age <= 0) {
       setErrors(ERROR.INVALID_AGE)
       setValidation({name: true, age: false})
-    } else if (!name) {
+    } else if (!userInput.name) {
       setErrors(ERROR.INVALID_NAME)
       setValidation({name: false, age: true})
     } else {
       onAddUser(userData)
       setValidation({name: true, age: true})
-      setAge(0)
-      setName('')
+      setUserInput({
+        age: Number(0),
+        name: ''
+      })
     }
   }
 
@@ -66,13 +78,13 @@ const Form: FC<Props> = ({ onAddUser }) => {
           <input id="userName"
                  type="text"
                  className={`${styles.formInput}${!validation.name ? ` ${styles.invalid}` : ''}`}
-                 onChange={handleChangeName} value={name}
+                 onChange={handleChangeName} value={userInput.name}
           />
 
           <label htmlFor="userAge" className={styles.formLabel}>Age</label>
           <input id="userAge"
                  type="number"
-                 value={age}
+                 value={userInput.age}
                  className={`${styles.formInput}${!validation.age ? ` ${styles.invalid}` : ''}`}
                  onChange={handleChangeAge}
           />
@@ -80,7 +92,6 @@ const Form: FC<Props> = ({ onAddUser }) => {
         </form>
       </Card>
     </>
-
   )
 }
 
