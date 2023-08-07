@@ -5,7 +5,7 @@ import Button from '../Button'
 import styles from './Modal.module.css'
 
 type Props = {
-  modalText: string
+  modalText: string | boolean
   onCloseModal: () => void
 }
 
