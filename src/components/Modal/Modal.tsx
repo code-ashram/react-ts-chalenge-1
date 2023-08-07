@@ -5,10 +5,11 @@ import Button from '../Button'
 import styles from './Modal.module.css'
 
 type Props = {
+  modalText: string
   onCloseModal: () => void
 }
 
-const Modal: FC<Props> = ({ onCloseModal }) => {
+const Modal: FC<Props> = ({ modalText, onCloseModal }) => {
 
   return (
     <div className={styles.modalWrap} onClick={onCloseModal}>
@@ -18,7 +19,7 @@ const Modal: FC<Props> = ({ onCloseModal }) => {
         </div>
 
         <div className={styles.modalBody}>
-          <p className={styles.modalMessage}>These fields must be filled!</p>
+          <p className={styles.modalMessage}>{modalText}</p>
           <Button buttonType={'button'} onClick={onCloseModal}>Close</Button>
         </div>
       </div>
