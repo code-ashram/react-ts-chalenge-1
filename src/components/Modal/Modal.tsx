@@ -1,11 +1,12 @@
 import { FC } from 'react'
 
 import Button from '../Button'
+import Error from '../../constants/errorsList.ts'
 
 import styles from './Modal.module.css'
 
 type Props = {
-  modalText: string | boolean
+  modalText: Error | undefined
   onCloseModal: () => void
 }
 

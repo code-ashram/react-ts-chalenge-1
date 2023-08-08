@@ -1,8 +1,7 @@
 import { ChangeEvent, FC, FormEvent, useState } from 'react'
 
 import User from '../../models/User.ts'
-import ERROR from '../../constants/errorsList.ts'
-
+import { getErrorMessage } from '../../utils.ts'
 import Card from '../../UI/Card'
 import Button from '../Button'
 import Modal from '../Modal'
@@ -19,32 +18,26 @@ type UserData = {
 }
 
 const Form: FC<Props> = ({ onAddUser }) => {
-  const [userInput, setUserInput] = useState<UserData>({ name: '', age: 0 })
-  const [errors, setErrors] = useState<string | boolean>('')
+  const [user, setUser] = useState<UserData>({ name: '', age: 0 })
   const [validation, setValidation] = useState<Record<'name' | 'age', boolean>>({ age: true, name: true })
 
-  // const handleChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
-  //   setUserInput({
-  //     ...userInput,
-  //     name: e.target.value
-  //   })
-  // }
-
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
-    setUserInput(prevInput => (
-      {
-        ...prevInput,
-        name: e.target.value
-      })
+    setUser(prevInput => (
+        {
+          ...prevInput,
+          name: e.target.value
+        }
+      )
     )
   }
 
   const handleChangeAge = (e: ChangeEvent<HTMLInputElement>): void => {
-    setUserInput(prevInput => (
-      {
-        ...prevInput,
-        age: Number(e.target.value)
-      })
+    setUser(prevInput => (
+        {
+          ...prevInput,
+          age: Number(e.target.value)
+        }
+      )
     )
   }
 
@@ -53,23 +46,20 @@ const Form: FC<Props> = ({ onAddUser }) => {
 
     const userData: User = {
       id: crypto.randomUUID(),
-      name: userInput.name,
-      age: userInput.age
+      name: user.name,
+      age: user.age
     }
 
-    if (!userInput.name && userInput.age <= 0) {
-      setErrors(ERROR.INVALID_NAME_AND_AGE)
+    if (!user.name && user.age <= 0) {
       setValidation({ name: false, age: false })
-    } else if (userInput.name && userInput.age <= 0) {
-      setErrors(ERROR.INVALID_AGE)
+    } else if (user.name && user.age <= 0) {
       setValidation({ name: true, age: false })
-    } else if (!userInput.name && userInput.age > 0) {
-      setErrors(ERROR.INVALID_NAME)
+    } else if (!user.name && user.age > 0) {
       setValidation({ name: false, age: true })
     } else {
       onAddUser(userData)
       setValidation({ name: true, age: true })
-      setUserInput({
+      setUser({
         age: Number(0),
         name: ''
       })
@@ -77,25 +67,26 @@ const Form: FC<Props> = ({ onAddUser }) => {
   }
 
   const handleCloseModal = (): void => {
-    setErrors(false)
+    setValidation({ name: true, age: true })
   }
 
   return (
     <>
-      {errors && <Modal modalText={errors} onCloseModal={handleCloseModal} />}
+      {(!validation.name || !validation.age) &&
+        <Modal modalText={getErrorMessage(validation)} onCloseModal={handleCloseModal} />}
       <Card className={styles.formWrap}>
         <form className={styles.form} onSubmit={handleSubmitForm}>
           <label htmlFor="userName" className={styles.formLabel}>Name</label>
           <input id="userName"
                  type="text"
                  className={`${styles.formInput}${!validation.name ? ` ${styles.invalid}` : ''}`}
-                 onChange={handleChangeName} value={userInput.name}
+                 onChange={handleChangeName} value={user.name}
           />
 
           <label htmlFor="userAge" className={styles.formLabel}>Age</label>
           <input id="userAge"
                  type="number"
-                 value={userInput.age}
+                 value={user.age}
                  className={`${styles.formInput}${!validation.age ? ` ${styles.invalid}` : ''}`}
                  onChange={handleChangeAge}
           />
