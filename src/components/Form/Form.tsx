@@ -23,18 +23,29 @@ const Form: FC<Props> = ({ onAddUser }) => {
   const [errors, setErrors] = useState<string | boolean>('')
   const [validation, setValidation] = useState<Record<'name' | 'age', boolean>>({ age: true, name: true })
 
+  // const handleChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
+  //   setUserInput({
+  //     ...userInput,
+  //     name: e.target.value
+  //   })
+  // }
+
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
-    setUserInput({
-      ...userInput,
-      name: e.target.value
-    })
+    setUserInput(prevInput => (
+      {
+        ...prevInput,
+        name: e.target.value
+      })
+    )
   }
 
   const handleChangeAge = (e: ChangeEvent<HTMLInputElement>): void => {
-    setUserInput({
-      ...userInput,
-      age: Number(e.target.value)
-    })
+    setUserInput(prevInput => (
+      {
+        ...prevInput,
+        age: Number(e.target.value)
+      })
+    )
   }
 
   const handleSubmitForm = (event: FormEvent): void => {
