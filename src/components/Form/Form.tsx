@@ -19,7 +19,7 @@ type UserData = {
 }
 
 const Form: FC<Props> = ({ onAddUser }) => {
-  const [userInput, setUserInput] = useState<UserData>({name: '', age: 0})
+  const [userInput, setUserInput] = useState<UserData>({ name: '', age: 0 })
   const [errors, setErrors] = useState<string | boolean>('')
   const [validation, setValidation] = useState<Record<'name' | 'age', boolean>>({ age: true, name: true })
 
@@ -46,18 +46,18 @@ const Form: FC<Props> = ({ onAddUser }) => {
       age: userInput.age
     }
 
-    if (userInput.age <= 0 && userInput.name) {
+    if (!userInput.name && userInput.age <= 0) {
       setErrors(ERROR.INVALID_NAME_AND_AGE)
-      setValidation({name: false, age: false})
-    } else if (userInput.age <= 0) {
+      setValidation({ name: false, age: false })
+    } else if (userInput.name && userInput.age <= 0) {
       setErrors(ERROR.INVALID_AGE)
-      setValidation({name: true, age: false})
-    } else if (!userInput.name) {
+      setValidation({ name: true, age: false })
+    } else if (!userInput.name && userInput.age > 0) {
       setErrors(ERROR.INVALID_NAME)
-      setValidation({name: false, age: true})
+      setValidation({ name: false, age: true })
     } else {
       onAddUser(userData)
-      setValidation({name: true, age: true})
+      setValidation({ name: true, age: true })
       setUserInput({
         age: Number(0),
         name: ''
