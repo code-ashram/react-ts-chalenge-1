@@ -20,25 +20,36 @@ type UserData = {
 const Form: FC<Props> = ({ onAddUser }) => {
   const [user, setUser] = useState<UserData>({ name: '', age: 0 })
   const [validation, setValidation] = useState<Record<'name' | 'age', boolean>>({ age: true, name: true })
+  const [showError, setShowError] = useState<boolean>(false)
 
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
-    setUser(prevInput => (
-        {
-          ...prevInput,
-          name: e.target.value
-        }
-      )
+    setUser(prevInput => ({
+        ...prevInput,
+        name: e.target.value
+      })
     )
+
+    if (!validation.name)
+      setValidation(prevValidation => ({
+          ...prevValidation,
+          name: true
+        })
+      )
   }
 
   const handleChangeAge = (e: ChangeEvent<HTMLInputElement>): void => {
-    setUser(prevInput => (
-        {
-          ...prevInput,
-          age: Number(e.target.value)
-        }
-      )
+    setUser(prevInput => ({
+        ...prevInput,
+        age: Number(e.target.value)
+      })
     )
+
+    if (Number(!validation.age))
+      setValidation(prevValidation => ({
+          ...prevValidation,
+          age: true
+        })
+      )
   }
 
   const handleSubmitForm = (event: FormEvent): void => {
@@ -49,6 +60,10 @@ const Form: FC<Props> = ({ onAddUser }) => {
       name: user.name,
       age: user.age
     }
+
+    if (!user.name || user.age <= 0)
+      setShowError(true)
+
 
     if (!user.name && user.age <= 0) {
       setValidation({ name: false, age: false })
@@ -67,13 +82,16 @@ const Form: FC<Props> = ({ onAddUser }) => {
   }
 
   const handleCloseModal = (): void => {
-    setValidation({ name: true, age: true })
+    setShowError(false)
   }
 
   return (
     <>
-      {(!validation.name || !validation.age) &&
-        <Modal modalText={getErrorMessage(validation)} onCloseModal={handleCloseModal} />}
+      {
+        // (!validation.name || !validation.age) &&
+        showError &&
+        <Modal modalText={getErrorMessage(validation)} onCloseModal={handleCloseModal} />
+      }
       <Card className={styles.formWrap}>
         <form className={styles.form} onSubmit={handleSubmitForm}>
           <label htmlFor="userName" className={styles.formLabel}>Name</label>

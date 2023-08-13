@@ -2,11 +2,15 @@
     align-self: center;
     margin-bottom: 20px;
     width: 100%;
-    max-width: 570px;
+    max-width: 580px;
 }
 
 :local(.form) {
     text-align: center;
+}
+
+:local(.form) button {
+    display: inline;
 }
 
 :local(.formLabel) {
@@ -28,13 +32,12 @@
         flex-direction: column;
     }
 
-    :local(.formWrap) {
-        max-width: 400px;
+    :local(.form) button {
+        margin-top: 20px;
     }
 
-    :local(.form) button {
-        display: block;
-        margin-top: 20px;
+    :local(.formWrap) {
+        max-width: 400px;
     }
 
     :local(.formInput) {
