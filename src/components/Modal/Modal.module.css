@@ -34,8 +34,3 @@
 :local(.modalBody) {
     padding: 20px;
 }
-
-:local(.modalMessage) {
-    margin-top: 0;
-    margin-bottom: 20px;
-}

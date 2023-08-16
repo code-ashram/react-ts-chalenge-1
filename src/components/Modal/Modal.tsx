@@ -1,26 +1,26 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 
 import Button from '../Button'
-import Error from '../../constants/errorsList.ts'
 
 import styles from './Modal.module.css'
 
 type Props = {
-  modalText: Error | undefined
+  modalTitle: string
   onCloseModal: () => void
+  children: ReactNode
 }
 
-const Modal: FC<Props> = ({ modalText, onCloseModal }) => {
+const Modal: FC<Props> = ({ modalTitle, onCloseModal, children }) => {
 
   return (
     <div className={styles.modalWrap} onClick={onCloseModal}>
       <div className={styles.modalWindow} onClick={(e) => {e.stopPropagation()}}>
         <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>Invalid Input!</h2>
+          <h2 className={styles.modalTitle}>{modalTitle}</h2>
         </div>
 
         <div className={styles.modalBody}>
-          <p className={styles.modalMessage}>{modalText}</p>
+          {children}
           <Button buttonType={'button'} onClick={onCloseModal}>Close</Button>
         </div>
       </div>

@@ -2,7 +2,6 @@ import { ChangeEvent, FC, FormEvent, useState } from 'react'
 
 import User from '../../models/User.ts'
 import { getErrorMessage } from '../../utils.ts'
-import Card from '../../UI/Card'
 import Button from '../Button'
 import Modal from '../Modal'
 
@@ -88,11 +87,11 @@ const Form: FC<Props> = ({ onAddUser }) => {
   return (
     <>
       {
-        // (!validation.name || !validation.age) &&
         showError &&
-        <Modal modalText={getErrorMessage(validation)} onCloseModal={handleCloseModal} />
+        <Modal modalTitle={"Invalid Input!"} onCloseModal={handleCloseModal} >
+          <p className={styles.formMessage}>{getErrorMessage(validation)}</p>
+        </Modal>
       }
-      <Card className={styles.formWrap}>
         <form className={styles.form} onSubmit={handleSubmitForm}>
           <label htmlFor="userName" className={styles.formLabel}>Name</label>
           <input id="userName"
@@ -110,7 +109,6 @@ const Form: FC<Props> = ({ onAddUser }) => {
           />
           <Button buttonType={'submit'}>Add user</Button>
         </form>
-      </Card>
     </>
   )
 }
