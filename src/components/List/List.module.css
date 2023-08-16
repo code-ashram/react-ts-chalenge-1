@@ -1,8 +1,42 @@
-:local(.list)  {
+:local(.list) {
     margin: 0;
     padding: 0;
     list-style: none;
 }
+
+:local(.listController) {
+    margin-bottom: 10px;
+}
+
+:local(.listChanger) {
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+:local(.listAddBtn) {
+    background-color: green;
+    border-color: green;
+}
+
+:local(.listAddBtn):hover {
+    background-color: #066406;
+    border-color: #066406;
+}
+
+:local(.listSwitcher) {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+:local(.listSwitcher) button {
+    flex-grow: 1;
+}
+
+:local(.listSwitcher) button:not(:last-child) {
+    margin-right: 10px;
+}
+
 
 :local(.listItem) {
     padding: 4px 8px;
