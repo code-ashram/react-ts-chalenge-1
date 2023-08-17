@@ -105,7 +105,7 @@ const Form: FC<Props> = ({ onAddUser }) => {
                  className={`${styles.formInput}${!validation.age ? ` ${styles.invalid}` : ''}`}
                  onChange={handleChangeAge}
           />
-          <Button buttonType={'submit'}>Add user</Button>
+          <Button buttonType={'submit'} onClick={() => handleSubmitForm}>Add user</Button>
         </form>
     </>
   )

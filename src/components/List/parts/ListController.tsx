@@ -6,19 +6,12 @@ import styles from '../List.module.css'
 
 type Props = {
   onAddUser: () => void
-  onLastWeek: () => void
-  onToday: () => void
-  onNextWeek: () => void
+  onClickLastWeek: () => void
+  onClickToday: () => void
+  onClickNextWeek: () => void
 }
 
-const ListController: FC<Props> = ({ onAddUser, onLastWeek, onToday, onNextWeek }) => {
-  const handleShowLastWeekList = () => {
-    onLastWeek()
-  }
-
-  const handleShowNextWeekList = () => {
-    onNextWeek()
-  }
+const ListController: FC<Props> = ({ onAddUser, onClickLastWeek, onClickToday, onClickNextWeek }) => {
 
   return (
     <div className={styles.listController}>
@@ -26,9 +19,9 @@ const ListController: FC<Props> = ({ onAddUser, onLastWeek, onToday, onNextWeek 
         <Button onClick={onAddUser} className={styles.listAddBtn}>Add User</Button>
       </div>
       <div className={styles.listSwitcher}>
-        <Button onClick={handleShowLastWeekList}>Last Week</Button>
-        <Button onClick={onToday}>Today</Button>
-        <Button onClick={handleShowNextWeekList}>Next Week</Button>
+        <Button onClick={onClickLastWeek}>Last Week</Button>
+        <Button onClick={onClickToday}>Today</Button>
+        <Button onClick={onClickNextWeek}>Next Week</Button>
       </div>
     </div>
   )
