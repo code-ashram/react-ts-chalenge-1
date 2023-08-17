@@ -12,17 +12,8 @@ type Props = {
 }
 
 const ListController: FC<Props> = ({ onAddUser, onLastWeek, onToday, onNextWeek }) => {
-
-  const handleAddUser = () => {
-    onAddUser()
-  }
-
   const handleShowLastWeekList = () => {
     onLastWeek()
-  }
-
-  const handleShowTodayList = () => {
-    onToday()
   }
 
   const handleShowNextWeekList = () => {
@@ -32,11 +23,11 @@ const ListController: FC<Props> = ({ onAddUser, onLastWeek, onToday, onNextWeek 
   return (
     <div className={styles.listController}>
       <div className={styles.listChanger}>
-        <Button onClick={handleAddUser} className={styles.listAddBtn}>Add User</Button>
+        <Button onClick={onAddUser} className={styles.listAddBtn}>Add User</Button>
       </div>
       <div className={styles.listSwitcher}>
         <Button onClick={handleShowLastWeekList}>Last Week</Button>
-        <Button onClick={handleShowTodayList}>Today</Button>
+        <Button onClick={onToday}>Today</Button>
         <Button onClick={handleShowNextWeekList}>Next Week</Button>
       </div>
     </div>

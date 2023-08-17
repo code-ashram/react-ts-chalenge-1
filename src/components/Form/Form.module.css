@@ -22,7 +22,6 @@
 
 :local(.formInput.invalid) {
     border-color: red;
-    background-color: salmon;
 }
 
 @media (max-width: 600px) {

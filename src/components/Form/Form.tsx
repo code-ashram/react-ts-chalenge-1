@@ -13,11 +13,11 @@ type Props = {
 
 type UserData = {
   name: string,
-  age: number,
+  age: string,
 }
 
 const Form: FC<Props> = ({ onAddUser }) => {
-  const [user, setUser] = useState<UserData>({ name: '', age: 0 })
+  const [user, setUser] = useState<UserData>({ name: '', age: '' })
   const [validation, setValidation] = useState<Record<'name' | 'age', boolean>>({ age: true, name: true })
   const [showError, setShowError] = useState<boolean>(false)
 
@@ -39,11 +39,11 @@ const Form: FC<Props> = ({ onAddUser }) => {
   const handleChangeAge = (e: ChangeEvent<HTMLInputElement>): void => {
     setUser(prevInput => ({
         ...prevInput,
-        age: Number(e.target.value)
+        age: e.target.value
       })
     )
 
-    if (Number(!validation.age))
+    if (!validation.age)
       setValidation(prevValidation => ({
           ...prevValidation,
           age: true
@@ -60,21 +60,20 @@ const Form: FC<Props> = ({ onAddUser }) => {
       age: user.age
     }
 
-    if (!user.name || user.age <= 0)
+    if (!user.name || !user.age)
       setShowError(true)
 
-
-    if (!user.name && user.age <= 0) {
+    if (!user.name && !user.age) {
       setValidation({ name: false, age: false })
-    } else if (user.name && user.age <= 0) {
+    } else if (user.name && !user.age) {
       setValidation({ name: true, age: false })
-    } else if (!user.name && user.age > 0) {
+    } else if (!user.name && user.age) {
       setValidation({ name: false, age: true })
     } else {
       onAddUser(userData)
       setValidation({ name: true, age: true })
       setUser({
-        age: Number(0),
+        age: '',
         name: ''
       })
     }
@@ -100,10 +99,9 @@ const Form: FC<Props> = ({ onAddUser }) => {
                  onChange={handleChangeName} value={user.name}
           />
 
-          <label htmlFor="userAge" className={styles.formLabel}>Age</label>
+          <label htmlFor="userAge" className={styles.formLabel}>DOB</label>
           <input id="userAge"
-                 type="number"
-                 value={user.age}
+                 type="date"
                  className={`${styles.formInput}${!validation.age ? ` ${styles.invalid}` : ''}`}
                  onChange={handleChangeAge}
           />
