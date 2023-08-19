@@ -49,9 +49,9 @@ const List: FC<Props> = ({ listSource }) => {
       <Card className={styles.listWrap}>
         <ListController
           onAddUser={handleToggleForm}
-          onClickLastWeek={() => handleShowLastWeekBirthday}
-          onClickToday={() => handleShowTodayBirthday}
-          onClickNextWeek={() => handleShowNextWeekBirthday} />
+          onClickLastWeek={handleShowLastWeekBirthday}
+          onClickToday={handleShowTodayBirthday}
+          onClickNextWeek={handleShowNextWeekBirthday} />
         <ul className={styles.list}>
           {usersDataBase.map(({ id, name, birthday }) => <ListItem key={id} title={name} age={birthday} />)}
         </ul>
