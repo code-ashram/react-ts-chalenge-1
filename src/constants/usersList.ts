@@ -4,42 +4,42 @@ const usersList: User[] = [
   {
     id: crypto.randomUUID(),
     name: 'Kishor',
-    age: '1990-08-07'
+    birthday: '1990-08-09'
   },
   {
     id: crypto.randomUUID(),
     name: 'Kirill',
-    age: '1990-08-10'
+    birthday: '1990-08-12'
   },
   {
     id: crypto.randomUUID(),
     name: 'Some Guy',
-    age: '1992-08-13'
+    birthday: '1992-08-19'
   },
   {
     id: crypto.randomUUID(),
     name: 'Warlock',
-    age: '1994-08-16'
+    birthday: '1994-08-19'
   },
   {
     id: crypto.randomUUID(),
     name: 'Marksman',
-    age: '1996-08-16'
+    birthday: '1996-08-19'
   },
   {
     id: crypto.randomUUID(),
     name: 'Vaishnava Thakur',
-    age: '1998-08-21'
+    birthday: '1998-08-21'
   },
   {
     id: crypto.randomUUID(),
     name: 'Your friend',
-    age: '1999-08-24'
+    birthday: '1999-08-22'
   },
   {
     id: crypto.randomUUID(),
     name: 'Berenica',
-    age: '2001-08-27'
+    birthday: '2001-08-23'
   },
 ]
 

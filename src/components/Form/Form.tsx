@@ -57,7 +57,7 @@ const Form: FC<Props> = ({ onAddUser }) => {
     const userData: User = {
       id: crypto.randomUUID(),
       name: user.name,
-      age: user.age
+      birthday: user.age
     }
 
     if (!user.name || !user.age)

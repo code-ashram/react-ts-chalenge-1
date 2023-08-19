@@ -8,12 +8,14 @@ import Form from '../Form'
 import Modal from '../Modal'
 
 import styles from './List.module.css'
+import DATE_RANGE from '../../constants/dateRange.ts'
+import { filterUsers } from '../../utils.ts'
 
 type Props = {
   listSource: User[]
 }
 
-const List: FC<Props> = ({listSource}) => {
+const List: FC<Props> = ({ listSource }) => {
   const [showForm, setShowForm] = useState<boolean>(false)
   const [usersDataBase, setUsersDataBase] = useState<User[]>(listSource)
 
@@ -26,11 +28,16 @@ const List: FC<Props> = ({listSource}) => {
     handleToggleForm()
   }
 
-  const handleShowTodayList = () => {
-    // setUsersDataBase(usersDataBase.filter((user) =>
-    //   new Date(user.age).getDate() && new Date(user.age).getMonth() === new Date().getDate() && new Date().getMonth())
-    // )
-    console.log(new Date(usersDataBase[1].age).getMonth())
+  const handleShowLastWeekBirthday = () => {
+    setUsersDataBase(filterUsers(usersDataBase, DATE_RANGE.PREV_WEEK))
+  }
+
+  const handleShowTodayBirthday = () => {
+    setUsersDataBase(filterUsers(usersDataBase, DATE_RANGE.TODAY))
+  }
+
+  const handleShowNextWeekBirthday = () => {
+    setUsersDataBase(filterUsers(usersDataBase, DATE_RANGE.NEXT_WEEK))
   }
 
   return (
@@ -42,11 +49,11 @@ const List: FC<Props> = ({listSource}) => {
       <Card className={styles.listWrap}>
         <ListController
           onAddUser={handleToggleForm}
-          onClickLastWeek={() => console.log('You check last week list')}
-          onClickToday={handleShowTodayList}
-          onClickNextWeek={() => console.log('You check next week list')} />
+          onClickLastWeek={() => handleShowLastWeekBirthday}
+          onClickToday={() => handleShowTodayBirthday}
+          onClickNextWeek={() => handleShowNextWeekBirthday} />
         <ul className={styles.list}>
-          {usersDataBase.map((listItem) => <ListItem key={listItem.id} title={listItem.name} age={listItem.age} />)}
+          {usersDataBase.map(({ id, name, birthday }) => <ListItem key={id} title={name} age={birthday} />)}
         </ul>
       </Card>
     </>

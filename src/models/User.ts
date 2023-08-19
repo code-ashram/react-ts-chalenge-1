@@ -1,7 +1,7 @@
 type User = {
   id: string,
   name: string,
-  age: string,
+  birthday: string,
 }
 
 export default User
