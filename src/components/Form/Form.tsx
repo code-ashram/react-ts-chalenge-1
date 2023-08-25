@@ -1,11 +1,12 @@
 import { ChangeEvent, FC, FormEvent, useState } from 'react'
 
-import User from '../../models/User.ts'
-import { getErrorMessage } from '../../utils.ts'
 import Button from '../Button'
 import Modal from '../Modal'
+import { getErrorMessage } from '../../utils.ts'
+import User from '../../models/User.ts'
 
 import styles from './Form.module.css'
+import { addUser } from '../../api'
 
 type Props = {
   onAddUser: (userData: User) => void
@@ -51,11 +52,10 @@ const Form: FC<Props> = ({ onAddUser }) => {
       )
   }
 
-  const handleSubmitForm = (event: FormEvent): void => {
+  const handleSubmitForm = async (event: FormEvent) => {
     event.preventDefault()
 
-    const userData: User = {
-      id: crypto.randomUUID(),
+    const userData: Omit<User, 'id'> = {
       name: user.name,
       birthday: user.age
     }
@@ -70,12 +70,13 @@ const Form: FC<Props> = ({ onAddUser }) => {
     } else if (!user.name && user.age) {
       setValidation({ name: false, age: true })
     } else {
-      onAddUser(userData)
-      setValidation({ name: true, age: true })
-      setUser({
-        age: '',
-        name: ''
-      })
+      const response = await addUser(new AbortController().signal, userData)
+
+      if (response) {
+        onAddUser(response)
+        setValidation({ name: true, age: true })
+        setUser({ age: '', name: '' })
+      }
     }
   }
 
@@ -85,28 +86,33 @@ const Form: FC<Props> = ({ onAddUser }) => {
 
   return (
     <>
-      {
-        showError &&
-        <Modal modalTitle={"Invalid Input!"} onCloseModal={handleCloseModal} >
+      {showError && (
+        <Modal modalTitle={'Invalid Input!'} onCloseModal={handleCloseModal}>
           <p className={styles.formMessage}>{getErrorMessage(validation)}</p>
         </Modal>
-      }
-        <form className={styles.form} onSubmit={handleSubmitForm}>
-          <label htmlFor="userName" className={styles.formLabel}>Name</label>
-          <input id="userName"
-                 type="text"
-                 className={`${styles.formInput}${!validation.name ? ` ${styles.invalid}` : ''}`}
-                 onChange={handleChangeName} value={user.name}
-          />
+      )}
 
-          <label htmlFor="userAge" className={styles.formLabel}>DOB</label>
-          <input id="userAge"
-                 type="date"
-                 className={`${styles.formInput}${!validation.age ? ` ${styles.invalid}` : ''}`}
-                 onChange={handleChangeAge}
-          />
-          <Button buttonType={'submit'} onClick={() => handleSubmitForm}>Add user</Button>
-        </form>
+      <form className={styles.form} onSubmit={handleSubmitForm}>
+        <label htmlFor="userName" className={styles.formLabel}>Name</label>
+
+        <input
+          id="userName"
+          type="text"
+          className={`${styles.formInput}${!validation.name ? ` ${styles.invalid}` : ''}`}
+          onChange={handleChangeName} value={user.name}
+        />
+
+        <label htmlFor="userAge" className={styles.formLabel}>DOB</label>
+
+        <input
+          id="userAge"
+          type="date"
+          className={`${styles.formInput}${!validation.age ? ` ${styles.invalid}` : ''}`}
+          onChange={handleChangeAge}
+        />
+
+        <Button buttonType={'submit'} onClick={() => handleSubmitForm}>Add user</Button>
+      </form>
     </>
   )
 }

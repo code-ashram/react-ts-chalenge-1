@@ -12,7 +12,7 @@ export const getErrorMessage = (validationResult: Record<'name' | 'age', boolean
   }
 }
 
-export const filterUsers = (users: User[], dateRange: DATE_RANGE) => {
+export const filterUsers = (users: User[], dateRange: DATE_RANGE): User[] => {
   const today: number = new Date().setHours(0, 0, 0, 0)
   let start: number
   let end: number

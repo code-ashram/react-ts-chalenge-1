@@ -1,60 +1,94 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
-import Card from '../../UI/Card'
-import User from '../../models/User.ts'
 import ListController from './parts/ListController.tsx'
 import ListItem from './parts/ListItem.tsx'
 import Form from '../Form'
 import Modal from '../Modal'
-
-import styles from './List.module.css'
+import Card from '../../UI/Card'
 import DATE_RANGE from '../../constants/dateRange.ts'
 import { filterUsers } from '../../utils.ts'
+import User from '../../models/User.ts'
+import { getUsers } from '../../api'
+import { OrderDirection } from '../../constants/OrderDirection.ts'
 
-type Props = {
-  listSource: User[]
-}
+import styles from './List.module.css'
 
-const List: FC<Props> = ({ listSource }) => {
+const List: FC = () => {
   const [showForm, setShowForm] = useState<boolean>(false)
-  const [usersDataBase, setUsersDataBase] = useState<User[]>(listSource)
+  const [users, setUsers] = useState<User[] | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.asc)
+  const [page, setPage] = useState<number>(1)
+  const [limit, setLimit] = useState<number>(5)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
+
+    setIsLoading(true)
+
+    getUsers(signal,orderDirection, page, limit)
+      .then((response) => {
+        setUsers(response)
+      })
+      .finally(() => setIsLoading(false))
+
+    return () => {
+      controller.abort()
+    }
+  }, [orderDirection, page, limit])
 
   const handleToggleForm = () => {
     setShowForm(!showForm)
   }
 
   const handleAddUser = (user: User) => {
-    setUsersDataBase(prevDataBase => [user, ...prevDataBase])
+    setUsers(prevUsers => prevUsers ? [user, ...prevUsers] : [user])
     handleToggleForm()
   }
 
   const handleShowLastWeekBirthday = () => {
-    setUsersDataBase(filterUsers(usersDataBase, DATE_RANGE.PREV_WEEK))
+    setUsers(filterUsers(users ?? [], DATE_RANGE.PREV_WEEK))
   }
 
   const handleShowTodayBirthday = () => {
-    setUsersDataBase(filterUsers(usersDataBase, DATE_RANGE.TODAY))
+    setUsers(filterUsers(users ?? [], DATE_RANGE.TODAY))
   }
 
   const handleShowNextWeekBirthday = () => {
-    setUsersDataBase(filterUsers(usersDataBase, DATE_RANGE.NEXT_WEEK))
+    setUsers(filterUsers(users ?? [], DATE_RANGE.NEXT_WEEK))
+  }
+
+  const handleToggleSort = () => {
+    setOrderDirection(prevOrder => prevOrder === OrderDirection.asc ? OrderDirection.desc : OrderDirection.asc)
   }
 
   return (
     <>
-      {showForm &&
+      {showForm && (
         <Modal modalTitle={'Enter user data'} onCloseModal={handleToggleForm}>
           <Form onAddUser={handleAddUser}></Form>
-        </Modal>}
+        </Modal>
+      )}
+
       <Card className={styles.listWrap}>
         <ListController
           onAddUser={handleToggleForm}
           onClickLastWeek={handleShowLastWeekBirthday}
           onClickToday={handleShowTodayBirthday}
-          onClickNextWeek={handleShowNextWeekBirthday} />
-        <ul className={styles.list}>
-          {usersDataBase.map(({ id, name, birthday }) => <ListItem key={id} title={name} age={birthday} />)}
-        </ul>
+          onClickNextWeek={handleShowNextWeekBirthday}
+          onSortUsers={handleToggleSort}
+        />
+
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <ul className={styles.list}>
+            {!!users?.length && users.map(({ id, name, birthday }) =>
+              <ListItem key={id} title={name} age={birthday} />
+            )}
+          </ul>
+        )}
       </Card>
     </>
   )

@@ -1,15 +1,13 @@
+import { FC } from 'react'
+
 import List from './components/List'
 
 import styles from './App.module.css'
-import usersList from './constants/usersList.ts'
 
-function App () {
-
-  return (
-    <section className={styles.mainSection}>
-      <List listSource={usersList}/>
-    </section>
-  )
-}
+const App: FC = () => (
+  <section className={styles.mainSection}>
+    <List />
+  </section>
+)
 
 export default App
