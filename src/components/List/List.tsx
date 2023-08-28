@@ -12,12 +12,14 @@ import { getUsers } from '../../api'
 import { OrderDirection } from '../../constants/OrderDirection.ts'
 
 import styles from './List.module.css'
+import Button from '../Button'
 
 const List: FC = () => {
   const [showForm, setShowForm] = useState<boolean>(false)
   const [users, setUsers] = useState<User[] | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.asc)
+  const [usersAmount, setUsersAmount] = useState<number>(5)
   const [page, setPage] = useState<number>(1)
   const [limit, setLimit] = useState<number>(5)
 
@@ -27,7 +29,7 @@ const List: FC = () => {
 
     setIsLoading(true)
 
-    getUsers(signal,orderDirection, page, limit)
+    getUsers(signal, orderDirection, page, limit)
       .then((response) => {
         setUsers(response)
       })
@@ -63,17 +65,28 @@ const List: FC = () => {
     setOrderDirection(prevOrder => prevOrder === OrderDirection.asc ? OrderDirection.desc : OrderDirection.asc)
   }
 
+  const handleChangeUsersAmount = (value: number) => {
+    setUsersAmount(value)
+  }
+
+  const handleShowMore = () => {
+    setLimit(usersAmount)
+  }
+
+
   return (
     <>
       {showForm && (
         <Modal modalTitle={'Enter user data'} onCloseModal={handleToggleForm}>
-          <Form onAddUser={handleAddUser}></Form>
+          <Form onAddUser={handleAddUser} />
         </Modal>
       )}
 
       <Card className={styles.listWrap}>
         <ListController
           onAddUser={handleToggleForm}
+          value={usersAmount}
+          onChangeValue={handleChangeUsersAmount}
           onClickLastWeek={handleShowLastWeekBirthday}
           onClickToday={handleShowTodayBirthday}
           onClickNextWeek={handleShowNextWeekBirthday}
@@ -87,6 +100,8 @@ const List: FC = () => {
             {!!users?.length && users.map(({ id, name, birthday }) =>
               <ListItem key={id} title={name} age={birthday} />
             )}
+
+            <Button className={styles.loadMoreBtn} onClick={handleShowMore}>Load More</Button>
           </ul>
         )}
       </Card>

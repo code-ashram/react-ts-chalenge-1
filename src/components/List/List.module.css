@@ -1,4 +1,6 @@
 :local(.list) {
+    display: flex;
+    flex-direction: column;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -10,7 +12,18 @@
 
 :local(.listChanger) {
     margin-bottom: 10px;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+:local(.usersAmount) {
+    width: 60px;
+    padding-right: 0;
+}
+
+:local(.usersAmountLabel) {
+    margin-right: 10px;
 }
 
 :local(.listAddBtn) {
@@ -62,4 +75,8 @@
 
 :local(.listItem):not(:last-child) {
     margin-bottom: 10px;
+}
+
+:local(.loadMoreBtn) {
+    align-self: center;
 }
