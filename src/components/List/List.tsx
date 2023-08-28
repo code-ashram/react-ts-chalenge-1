@@ -101,7 +101,7 @@ const List: FC = () => {
               <ListItem key={id} title={name} age={birthday} />
             )}
 
-            <Button className={styles.loadMoreBtn} onClick={handleShowMore}>Load More</Button>
+            {users?.length === limit && <Button className={styles.loadMoreBtn} onClick={handleShowMore}>Load More</Button>}
           </ul>
         )}
       </Card>
