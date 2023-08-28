@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 
 import Button from '../../Button'
 
@@ -12,13 +12,24 @@ type Props = {
   onSortUsers: () => void
 }
 
+const UP = <>&#129093;</>;
+const DOWN = <>&#129095;</>;
+
 const ListController: FC<Props> = ({ onAddUser, onClickLastWeek, onClickToday, onClickNextWeek, onSortUsers }) => {
+
+  const [sort, setSort] = useState(UP)
+
+  const handleChangeSort = () => {
+    onSortUsers()
+    setSort(sort === UP ? DOWN : UP)
+  }
 
   return (
     <div className={styles.listController}>
+
       <div className={styles.listChanger}>
         <Button onClick={onAddUser} className={styles.listAddBtn}>Add User</Button>
-        <Button onClick={onSortUsers}>Sort Users</Button>
+        <Button className={styles.sortBtn} onClick={handleChangeSort}>{sort}</Button>
       </div>
 
       <div className={styles.listSwitcher}>

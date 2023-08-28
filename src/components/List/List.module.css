@@ -24,6 +24,17 @@
     border-color: #066406;
 }
 
+:local(.sortBtn) {
+    padding: 4px 7px;
+    background-color: #e39229;
+    border-color: #e39229;
+}
+
+:local(.sortBtn):hover {
+    background-color: #b37115;
+    border-color: #b37115;
+}
+
 :local(.listSwitcher) {
     display: flex;
     justify-content: space-between;
