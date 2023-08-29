@@ -13,15 +13,16 @@ import { OrderDirection } from '../../constants/OrderDirection.ts'
 
 import styles from './List.module.css'
 import Button from '../Button'
+import Loader from '../Loader'
 
 const List: FC = () => {
   const [showForm, setShowForm] = useState<boolean>(false)
   const [users, setUsers] = useState<User[] | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.asc)
-  const [usersAmount, setUsersAmount] = useState<number>(5)
   const [page, setPage] = useState<number>(1)
   const [limit, setLimit] = useState<number>(5)
+  const [showMoreButton, setShowMoreButton] = useState<boolean>(true)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -31,7 +32,8 @@ const List: FC = () => {
 
     getUsers(signal, orderDirection, page, limit)
       .then((response) => {
-        setUsers(response)
+        if (response?.length <= limit) setShowMoreButton(false)
+        setUsers((prevUsers) => prevUsers?.length ? [...prevUsers, ...response] : response)
       })
       .finally(() => setIsLoading(false))
 
@@ -62,17 +64,18 @@ const List: FC = () => {
   }
 
   const handleToggleSort = () => {
+    setUsers(null)
     setOrderDirection(prevOrder => prevOrder === OrderDirection.asc ? OrderDirection.desc : OrderDirection.asc)
   }
 
-  const handleChangeUsersAmount = (value: number) => {
-    setUsersAmount(value)
+  const handleChangeUsersCount = (value: number) => {
+    setUsers(null)
+    setLimit(value)
   }
 
   const handleShowMore = () => {
-    setLimit(usersAmount)
+    setPage((prevPage) => prevPage + 1)
   }
-
 
   return (
     <>
@@ -85,8 +88,8 @@ const List: FC = () => {
       <Card className={styles.listWrap}>
         <ListController
           onAddUser={handleToggleForm}
-          value={usersAmount}
-          onChangeValue={handleChangeUsersAmount}
+          value={limit}
+          onChangeValue={handleChangeUsersCount}
           onClickLastWeek={handleShowLastWeekBirthday}
           onClickToday={handleShowTodayBirthday}
           onClickNextWeek={handleShowNextWeekBirthday}
@@ -94,14 +97,15 @@ const List: FC = () => {
         />
 
         {isLoading ? (
-          <p>Loading...</p>
+          <Loader count={limit} />
         ) : (
           <ul className={styles.list}>
             {!!users?.length && users.map(({ id, name, birthday }) =>
               <ListItem key={id} title={name} age={birthday} />
             )}
 
-            {users?.length === limit && <Button className={styles.loadMoreBtn} onClick={handleShowMore}>Load More</Button>}
+            {showMoreButton &&
+              <Button className={styles.loadMoreBtn} onClick={handleShowMore}>Load More</Button>}
           </ul>
         )}
       </Card>
