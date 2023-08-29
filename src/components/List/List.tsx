@@ -32,7 +32,7 @@ const List: FC = () => {
 
     getUsers(signal, orderDirection, page, limit)
       .then((response) => {
-        if (response?.length <= limit) setShowMoreButton(false)
+        setShowMoreButton(response?.length === limit)
         setUsers((prevUsers) => prevUsers?.length ? [...prevUsers, ...response] : response)
       })
       .finally(() => setIsLoading(false))
@@ -96,17 +96,18 @@ const List: FC = () => {
           onSortUsers={handleToggleSort}
         />
 
-        {isLoading ? (
-          <Loader count={limit} />
-        ) : (
-          <ul className={styles.list}>
-            {!!users?.length && users.map(({ id, name, birthday }) =>
-              <ListItem key={id} title={name} age={birthday} />
-            )}
+        <ul className={styles.list}>
+          {!!users?.length && users.map(({ id, name, birthday }) =>
+            <ListItem key={id} title={name} age={birthday} />
+          )}
+        </ul>
 
-            {showMoreButton &&
-              <Button className={styles.loadMoreBtn} onClick={handleShowMore}>Load More</Button>}
-          </ul>
+        {isLoading && (
+          <Loader count={limit} />
+        )}
+
+        {showMoreButton && (
+          <Button className={styles.loadMoreBtn} onClick={handleShowMore}>Load More</Button>
         )}
       </Card>
     </>

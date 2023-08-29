@@ -1,6 +1,4 @@
 :local(.list) {
-    display: flex;
-    flex-direction: column;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -69,6 +67,9 @@
 }
 
 :local(.listWrap) {
+    display: flex;
+    flex-direction: column;
+
     width: 100%;
     max-width: 800px;
 }
@@ -78,5 +79,6 @@
 }
 
 :local(.loadMoreBtn) {
+    margin-top: 10px;
     align-self: center;
 }
